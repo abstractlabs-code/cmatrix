@@ -25,8 +25,10 @@ LABEL org.opencontainers.image.authors="Abstract Labs" \
 
 RUN apk update && \
     apk add --no-cache \
-    ncurses-terminfo-base 
+    ncurses-terminfo-base && \
+    adduser -g "The One" -s /usr/sbin/nologin -D -H neo
 
 COPY --from=cmatrixbuilder /cmatrix/cmatrix /cmatrix
 
+USER neo
 CMD ["./cmatrix"]
