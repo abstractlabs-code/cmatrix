@@ -1,9 +1,6 @@
-FROM alpine:3.22.0
+FROM alpine:3.22.0 as cmatrixbuilder
 
-LABEL org.opencontainers.image.authors="Abstract Labs" \
-      org.opencontainers.image.description="Image for https://github.com/abishekvashok/cmatrix"
-
-WORKDIR /cmatrix
+WORKDIR cmatrix
 
 RUN apk update && \
     apk add --no-cache \
@@ -19,5 +16,17 @@ RUN apk update && \
     ./configure LDFLAGS="-static" && \
     make
 
+
+
+FROM alpine:3.22.0 
+
+LABEL org.opencontainers.image.authors="Abstract Labs" \
+      org.opencontainers.image.description="Image for https://github.com/abishekvashok/cmatrix"
+
+RUN apk update && \
+    apk add --no-cache \
+    ncurses-terminfo-base 
+
+COPY --from=cmatrixbuilder /cmatrix/cmatrix /cmatrix
 
 CMD ["./cmatrix"]
