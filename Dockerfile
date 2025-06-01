@@ -31,4 +31,5 @@ RUN apk update && \
 COPY --from=cmatrixbuilder /cmatrix/cmatrix /cmatrix
 
 USER neo
-CMD ["./cmatrix"]
+ENTRYPOINT ["./cmatrix"]
+CMD ["-b"]
